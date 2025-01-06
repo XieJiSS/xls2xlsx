@@ -1296,7 +1296,7 @@ class HTMLXLS2XLSX:
                 if dt.date() == date(1, 1, 1):
                     return dt.time()
                 if dt.year == 1:
-                    dt = dt.replace(year, date.today().year)
+                    dt = dt.replace(dt.year, date.today().year)
                 if dt.year >= self.EARLIEST_DATE:
                     if dt.time() == tm(0):
                         return dt.date()
@@ -1388,17 +1388,17 @@ class HTMLXLS2XLSX:
                         t_type = TOK_DAY0
                     elif tok == str(year%100) and not look_ahead_time:
                         t_type = TOK_YEAR2
-                    elif TOK_HOUR not in token_seen and tok == str(hour) and not has_am_pm:
+                    elif TOK_HOUR not in token_seen and number_format != css_style.number_format_replacements['Short Date'] and tok == str(hour) and not has_am_pm:
                         t_type = TOK_HOUR
-                    elif TOK_HOUR0 not in token_seen and hour < 10 and tok == '0' + str(hour) and not has_am_pm:
+                    elif TOK_HOUR0 not in token_seen and number_format != css_style.number_format_replacements['Short Date'] and hour < 10 and tok == '0' + str(hour) and not has_am_pm:
                         t_type = TOK_HOUR0
-                    elif TOK_HOUR_12 not in token_seen and tok == str(hour_12) and has_am_pm:
+                    elif TOK_HOUR_12 not in token_seen and number_format != css_style.number_format_replacements['Short Date'] and tok == str(hour_12) and has_am_pm:
                         t_type = TOK_HOUR_12
-                    elif TOK_HOUR0_12 not in token_seen and hour_12 < 10 and tok == '0' + str(hour_12) and has_am_pm:
+                    elif TOK_HOUR0_12 not in token_seen and number_format != css_style.number_format_replacements['Short Date'] and hour_12 < 10 and tok == '0' + str(hour_12) and has_am_pm:
                         t_type = TOK_HOUR0_12
-                    elif TOK_MIN not in token_seen and tok == f'{minute:02d}':
+                    elif TOK_MIN not in token_seen and number_format != css_style.number_format_replacements['Short Date'] and tok == f'{minute:02d}':
                         t_type = TOK_MIN
-                    elif TOK_SEC not in token_seen and tok == f'{second:02d}':
+                    elif TOK_SEC not in token_seen and number_format != css_style.number_format_replacements['Short Date'] and tok == f'{second:02d}':
                         t_type = TOK_SEC
                 elif tok in calendar.day_abbr:
                     t_type = TOK_SHORT_DAY
