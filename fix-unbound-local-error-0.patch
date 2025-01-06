@@ -1,0 +1,33 @@
+From 02934e1faf2bc389394c07906366cf09c3d9b733 Mon Sep 17 00:00:00 2001
+From: Thiago Coelho <thiagovscoelho@gmail.com>
+Date: Thu, 16 Mar 2023 12:43:43 -0300
+Subject: [PATCH] Fix UnboundLocalError due to undefined value variable
+
+---
+ xls2xlsx/htmlxls2xlsx.py | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/xls2xlsx/htmlxls2xlsx.py b/xls2xlsx/htmlxls2xlsx.py
+index 42b0bb7..08b3470 100644
+--- a/xls2xlsx/htmlxls2xlsx.py
++++ b/xls2xlsx/htmlxls2xlsx.py
+@@ -1699,13 +1699,14 @@ def element_index(elem):
+                         if 'align' in col.attrs:
+                             alg = Alignment(horizontal=col.attrs['align'])
+                         if 'valign' in col.attrs:
+-                            if value == 'middle':
+-                                value = 'center'
+-                            if value in {'distributed', 'justify', 'bottom', 'top', 'center'}:
++                            valign_value = col.attrs['valign'] # Get the valign attribute value
++                            if valign_value == 'middle':
++                                valign_value = 'center'
++                            if valign_value in {'distributed', 'justify', 'bottom', 'top', 'center'}:
+                                 if alg:
+-                                    alg.vertical = value
++                                    alg.vertical = valign_value
+                                 else:
+-                                    alg = Alignment(vertical=value)
++                                    alg = Alignment(vertical=valign_value)
+                         # If this cell contains one formatting tag, then apply that tag to the entire contents of
+                         # the cell, since openpyxl doesn't support rich text.  If that tag also contains one
+                         # formatting tag, then keep going, so <td><font size="5"><span style="font-family: monospace">...</span></font></td> will apply
